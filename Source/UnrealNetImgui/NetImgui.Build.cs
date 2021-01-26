@@ -61,6 +61,10 @@ public class NetImgui : ModuleRules
 		// Com Port used by Editor exe to wait for a connection from netImgui Server (8890 by default)
 		// NetImgui Server will try to find running editor client on this port and connect to them
 		string kEditorListenPort	= "(NetImgui::kDefaultClientPort+1)";
+
+		// Com Port used by Dedicated Server exe to wait for a connection from netImgui Server (8891 by default)
+		// NetImgui Server will try to find running dedicaed server client on this port and connect to them
+		string kDedicatedServerListenPort = "(NetImgui::kDefaultClientPort+2)";
 		//---------------------------------------------------------------------
 
 		PrivateIncludePaths.Add(Path.Combine(ModuleDirectory, "../ThirdParty/ImGuiLib/Source"));
@@ -89,6 +93,7 @@ public class NetImgui : ModuleRules
 		PublicDefinitions.Add("IMGUI_API=DLLEXPORT");
 		PublicDefinitions.Add("NETIMGUI_LISTENPORT_GAME=" + kGameListenPort);
 		PublicDefinitions.Add("NETIMGUI_LISTENPORT_EDITOR=" + kEditorListenPort);
+		PublicDefinitions.Add("NETIMGUI_LISTENPORT_DEDICATED_SERVER=" + kDedicatedServerListenPort);
 		PrivateDefinitions.Add("NETIMGUI_WINSOCKET_ENABLED=0");      // Using Unreal sockets, no need for built-in sockets
 		PrivateDefinitions.Add("NETIMGUI_POSIX_SOCKETS_ENABLED=0");  // Using Unreal sockets, no need for built-in sockets
 	}
