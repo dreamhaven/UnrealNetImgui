@@ -86,7 +86,7 @@ SocketInfo* ListenStart(uint32_t ListenPort)
 
 SocketInfo* ListenConnect(SocketInfo* pListenSocket)
 {
-	if (pListenSocket)
+	if (pListenSocket != nullptr && pListenSocket->mpSocket != nullptr)
 	{
 		FSocket* pNewSocket = pListenSocket->mpSocket->Accept(FString("netImgui"));
 		if( pNewSocket )
