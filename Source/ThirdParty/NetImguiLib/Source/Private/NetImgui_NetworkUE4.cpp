@@ -2,12 +2,16 @@
 
 #if NETIMGUI_ENABLED && defined(__UNREAL__)
 
+#include <mutex>
+
 #include "CoreMinimal.h"
 #include "SocketSubsystem.h"
 #include "Sockets.h"
 
 namespace NetImgui { namespace Internal { namespace Network 
 {
+
+std::mutex listen_socket_mutex;
 
 struct SocketInfo
 {
@@ -86,21 +90,26 @@ SocketInfo* ListenStart(uint32_t ListenPort)
 
 SocketInfo* ListenConnect(SocketInfo* pListenSocket)
 {
-	if (pListenSocket)
+	if (pListenSocket == nullptr)
+		return nullptr;
+
+	std::lock_guard<std::mutex> listen_socket_lock(listen_socket_mutex);
+
+	FSocket* pNewSocket = pListenSocket->mpSocket->Accept(FString("netImgui"));
+	if (pNewSocket)
 	{
-		FSocket* pNewSocket = pListenSocket->mpSocket->Accept(FString("netImgui"));
-		if( pNewSocket )
-		{
-			pNewSocket->SetNonBlocking(false);
-			SocketInfo* pSocketInfo = netImguiNew<SocketInfo>(pNewSocket);
-			return pSocketInfo;
-		}
+		pNewSocket->SetNonBlocking(false);
+		SocketInfo* pSocketInfo = netImguiNew<SocketInfo>(pNewSocket);
+		return pSocketInfo;
 	}
+
 	return nullptr;
 }
 
 void Disconnect(SocketInfo* pClientSocket)
 {
+	std::lock_guard<std::mutex> listen_socket_lock(listen_socket_mutex);
+
 	netImguiDelete(pClientSocket);	
 }
 
