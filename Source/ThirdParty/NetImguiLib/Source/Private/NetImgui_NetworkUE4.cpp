@@ -8,10 +8,10 @@
 #include "SocketSubsystem.h"
 #include "Sockets.h"
 
+static std::mutex listen_socket_mutex;
+
 namespace NetImgui { namespace Internal { namespace Network 
 {
-
-std::mutex listen_socket_mutex;
 
 struct SocketInfo
 {
