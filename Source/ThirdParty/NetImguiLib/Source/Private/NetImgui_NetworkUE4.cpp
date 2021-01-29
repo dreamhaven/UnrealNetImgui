@@ -95,6 +95,9 @@ SocketInfo* ListenConnect(SocketInfo* pListenSocket)
 
 	std::lock_guard<std::mutex> listen_socket_lock(listen_socket_mutex);
 
+	if (pListenSocket->mpSocket == nullptr)
+		return nullptr;
+
 	FSocket* pNewSocket = pListenSocket->mpSocket->Accept(FString("netImgui"));
 	if (pNewSocket)
 	{
