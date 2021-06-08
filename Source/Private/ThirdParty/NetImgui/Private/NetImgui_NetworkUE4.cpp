@@ -1,8 +1,11 @@
+#if NETIMGUI_ENABLED && defined(__UNREAL__)
+#include "CoreMinimal.h"
+#endif // #if NETIMGUI_ENABLED && defined(__UNREAL__)
+
 #include "NetImgui_Shared.h"
 
 #if NETIMGUI_ENABLED && defined(__UNREAL__)
 
-#include "CoreMinimal.h"
 #include "Misc/OutputDeviceRedirector.h"
 #include "SocketSubsystem.h"
 #include "Sockets.h"
